@@ -1,26 +1,19 @@
 import RPi.GPIO as GPIO
 import time
 
-LED = 18
-GPIO.setmode(GPIO.BCM)
+def led_pwm(pin):
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pin, GPIO.OUT)
 
-GPIO.setup(LED, GPIO.OUT)
-
-LED = GPIO.PWM(LED, 100)
-
-LED.start(0)
-
-delay = 0.1
-
-try:
-    while True:
-        for i in range(0, 101):
-            LED.ChangeDutyCycle(i)
-            time.sleep(delay)
-        for i in range(100, -1, -1):
-            LED.ChangeDutyCycle(i)
-            time.sleep(delay)
-
-except KeyboardInterrupt:
-    LED.stop()
+    pwm = GPIO.PWM(pin, 100) # pwm 설정 (100Hz)
+    pwm.start(0)
+    
+    # 밝기가 0에서 100 까지 0.1초 간격으로 바뀜
+    for i in range(101):
+        pwm.ChangeDutyCycle(i)
+        time.sleep(0.1)
+    
+    pwm.stop()
     GPIO.cleanup()
+
+led_pwm(18)

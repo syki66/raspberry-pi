@@ -1,19 +1,13 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BCM)
+def led(pin, t):
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pin, GPIO.OUT)
 
-LED = 18
+    GPIO.output(pin, True)
+    time.sleep(t) 
 
-GPIO.setup(LED, GPIO.OUT)
+    GPIO.cleanup(pin)
 
-try:
-    while (True):
-        GPIO.output(LED, GPIO.HIGH)
-        time.sleep(1)
-        GPIO.output(LED, GPIO.LOW)
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    GPIO.output(LED, GPIO.LOW)
-    GPIO.cleanup()
+led(18, 5) # 18번 핀에 끼운 LED를 5초동안 점등
